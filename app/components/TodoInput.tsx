@@ -1,18 +1,16 @@
 'use client'
+import { useTodoContext } from '@/context/TodoContext'
 import React, { useRef, useState } from 'react'
 
-interface TodoInputProp{
-  onSubmitTask: (title: string) => void
-}
-
-const TodoInput = ({ onSubmitTask }:TodoInputProp) => {
+const TodoInput = () => {
+  const {onSubmitTaskHandler} = useTodoContext()
   const [title, setTitle] = useState('')
   const inputRef = useRef(null)
 
   const keyDownSubmitHandler = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if(e.key === 'Enter' && title.trim() !== '') 
     {
-      onSubmitTask(title)
+      onSubmitTaskHandler(title)
       setTitle('')
     }
   }
@@ -26,7 +24,7 @@ const TodoInput = ({ onSubmitTask }:TodoInputProp) => {
             </div>
             <button onClick={() => { 
               if (title.trim() !== '') {
-                onSubmitTask(title)
+                onSubmitTaskHandler(title)
                 setTitle('')}}}
               className='bg-blue-500 w-full hover:cursor-pointer mt-3 p-3 text-white'>Add new Task</button>
         </div>

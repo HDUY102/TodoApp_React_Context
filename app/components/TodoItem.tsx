@@ -2,26 +2,19 @@
 import React, { useEffect, useState } from 'react'
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { Task } from './generic/todoItem';
+import { useTodoContext } from '@/context/TodoContext';
 
-interface TodoItemProp{
-    task: Task
-    onToggleCompleted: (id: number) => void
-    onEditedTask: (id: number, title: string) => void
-    onDeletedTask: (id: number) => void
-}
-
-const TodoItem = ({task,onToggleCompleted, onDeletedTask, onEditedTask}:TodoItemProp) => {
+export default function TodoItem ({task}:{ task: Task }) {
+    const {onToggleCompletedHandler, onDeletedTasksHandler, onEditedTaskHandler} = useTodoContext()
     const [isEditing, setIsEditing] = useState(false)
     const [editTask, setEditTask] = useState(task.title)
 
     useEffect(() => {
-        if (isEditing) {
-        setEditTask(task.title)
-        }
+        if (isEditing)  setEditTask(task.title)
     }, [isEditing, task.title])
 
     const editSaveHandler = () => {
-        onEditedTask(task.id, editTask)
+        onEditedTaskHandler(task.id, editTask)
         setIsEditing(false)
     }
     
@@ -46,17 +39,15 @@ const TodoItem = ({task,onToggleCompleted, onDeletedTask, onEditedTask}:TodoItem
         </div>
         <div>
             <button className='m-3 hover:cursor-pointer'>
-                <input checked={task?.isCompleted} onChange={() => onToggleCompleted(task.id)} type="checkbox" />
+                <input checked={task?.isCompleted} onChange={() => onToggleCompletedHandler(task.id)} type="checkbox" />
             </button>
             <button onClick={() => {setIsEditing(!isEditing) }} className='text-yellow-400 m-3 hover:cursor-pointer hover:text-yellow-300'>
                 <FaPencilAlt />
             </button>
-            <button onClick={() => onDeletedTask(task.id)} className='text-red-400 m-3 hover:cursor-pointer hover:text-red-300'>
+            <button onClick={() => onDeletedTasksHandler(task.id)} className='text-red-400 m-3 hover:cursor-pointer hover:text-red-300'>
                 <FaTrash />
             </button>
         </div>
     </div>
     )
 }
-
-export default TodoItem

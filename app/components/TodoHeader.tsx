@@ -1,16 +1,17 @@
 import React from 'react'
-import {  TaskFilter, TypeFilter } from './generic/todoItem'
+import {  TaskFilter } from './generic/todoItem'
+import { useTodoContext } from '@/context/TodoContext'
 
 interface TodoHeaderProp{
-    filters: TaskFilter[]
-    onFilterChange: (type: TypeFilter) => void
+  filters: TaskFilter[]
 }
 
-const TodoHeader = ({filters,onFilterChange}:TodoHeaderProp) => {
+const TodoHeader = ({filters}:TodoHeaderProp) => {
+  const {onFilterChangeHandler} = useTodoContext()
   return (
     <div className='grid grid-rows-1 grid-cols-3 '>
       {filters?.map((filter) => (
-        <button onClick={() => onFilterChange(filter.type)} key={filter.key} className="hover:cursor-pointer p-3 text-white m-3 items-center bg-blue-500">{filter.label}</button>
+        <button onClick={() => onFilterChangeHandler(filter.type)} key={filter.key} className="hover:cursor-pointer p-3 text-white m-3 items-center bg-blue-500">{filter.label}</button>
       ))}
     </div>
   )

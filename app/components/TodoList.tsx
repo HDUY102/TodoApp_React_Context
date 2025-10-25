@@ -1,19 +1,13 @@
 import React from 'react'
 import TodoItem from './TodoItem'
-import { Task } from './generic/todoItem'
+import { useTodoContext } from '@/context/TodoContext'
 
-interface TodoListProp{
-  displayTasks: Task[]
-  onToggleCompleted: (id: number) => void
-  onEditedTask: (id: number, title: string) => void
-  onDeletedTask: (id: number) => void
-}
-
-const TodoList = ({displayTasks, onToggleCompleted, onDeletedTask, onEditedTask}:TodoListProp) => {
+const TodoList = () => {
+  const {currentFilteredTasks } = useTodoContext()
   return (
     <div>
-      {displayTasks?.map((task) => (
-        <TodoItem key={task.id} task={task} onToggleCompleted={onToggleCompleted} onDeletedTask={onDeletedTask} onEditedTask={onEditedTask}/>
+      {currentFilteredTasks?.map((task) => (
+        <TodoItem key={task.id} task={task}/>
       ))}
     </div>
   )
